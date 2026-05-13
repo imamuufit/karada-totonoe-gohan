@@ -10,11 +10,16 @@
   --leaf-soft: #dfeadd;
   --gold: #c7a85d;
   --coral: #c8755b;
+  --danger: #b64b43;
   --shadow: 0 14px 38px rgba(21, 21, 21, 0.08);
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -27,6 +32,7 @@ body {
 
 button,
 input,
+select,
 textarea {
   font: inherit;
 }
@@ -36,9 +42,9 @@ button {
 }
 
 .app-shell {
-  width: min(100%, 760px);
+  width: min(100%, 780px);
   margin: 0 auto;
-  padding: 18px 14px 36px;
+  padding: 18px 14px 38px;
 }
 
 .topbar {
@@ -89,6 +95,10 @@ p {
   line-height: 1.72;
 }
 
+a {
+  color: inherit;
+}
+
 .icon-button {
   width: 42px;
   height: 42px;
@@ -111,33 +121,74 @@ p {
   box-shadow: var(--shadow);
 }
 
-.hero-panel p:last-child {
+.hero-panel p:last-child,
+.notice p:last-child,
+.placeholder-card p,
+.integration-card p {
   margin-bottom: 0;
+}
+
+.link-band {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.link-band a,
+.integration-card a {
+  display: grid;
+  min-height: 46px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  text-align: center;
+  text-decoration: none;
+  font-weight: 800;
+  box-shadow: var(--shadow);
 }
 
 .notice,
 .card,
-.result-card {
+.result-card,
+.placeholder-card,
+.urgent-card {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--paper);
   box-shadow: var(--shadow);
 }
 
-.notice {
+.notice,
+.placeholder-card,
+.urgent-card {
   margin: 14px 0;
-  padding: 15px;
+  padding: 16px;
+}
+
+.privacy-card {
   background: #fffdf8;
 }
 
-.notice strong {
+.safety-card {
+  background: #fffaf6;
+}
+
+.notice strong,
+.urgent-card strong {
   display: block;
   margin-bottom: 8px;
 }
 
-.notice p {
-  margin-bottom: 0;
+.notice p,
+.mini-note {
   font-size: 0.88rem;
+}
+
+.mini-note {
+  margin: 12px 0 0;
 }
 
 .flow {
@@ -162,22 +213,45 @@ p {
   margin-bottom: 12px;
 }
 
-.choice-grid {
+.small-heading {
+  margin: 16px 0 10px;
+}
+
+.small-heading h3 {
+  margin-bottom: 0;
+}
+
+.mode-grid,
+.choice-grid,
+.form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 9px;
+}
+
+.mode-grid {
+  grid-template-columns: 1fr;
+}
+
+.choice-grid {
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .choice-grid.single {
   grid-template-columns: 1fr;
 }
 
+.safety-grid {
+  margin-top: 12px;
+}
+
+.mode-grid input,
 .choice-grid input {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
+.mode-grid span,
 .choice-grid span {
   display: grid;
   min-height: 52px;
@@ -192,11 +266,76 @@ p {
   line-height: 1.35;
 }
 
+.mode-grid span {
+  min-height: 82px;
+  place-items: start;
+  align-content: center;
+  gap: 6px;
+  text-align: left;
+  padding: 13px;
+}
+
+.mode-grid small {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.mode-grid input:checked + span,
 .choice-grid input:checked + span {
   border-color: var(--leaf);
   background: var(--leaf-soft);
   color: #1d3b28;
   box-shadow: inset 0 0 0 1px rgba(78, 123, 91, 0.22);
+}
+
+.safety-grid input:checked + span {
+  border-color: var(--danger);
+  background: #fff0ec;
+  color: #762d28;
+}
+
+.form-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+}
+
+.field.wide {
+  grid-column: 1 / -1;
+}
+
+.field span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfaf7;
+  color: var(--ink);
+  padding: 10px 12px;
+}
+
+textarea {
+  resize: vertical;
+  line-height: 1.65;
+}
+
+.mode-panel {
+  display: none;
+}
+
+.mode-panel.active {
+  display: block;
 }
 
 .primary-button,
@@ -239,10 +378,24 @@ p {
   padding: 8px 0 0;
 }
 
+.placeholder-card {
+  background: #fffdf8;
+}
+
 .results {
   display: grid;
   gap: 14px;
   margin-top: 18px;
+}
+
+.urgent-card {
+  margin: 0;
+  border-color: rgba(182, 75, 67, 0.35);
+  background: #fff0ec;
+}
+
+.urgent-card p {
+  margin-bottom: 0;
 }
 
 .result-header {
@@ -251,6 +404,41 @@ p {
 
 .result-header p:last-child {
   margin-bottom: 0;
+}
+
+.calorie-card {
+  background: #fffdf8;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.metric-grid div {
+  min-height: 88px;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfaf7;
+}
+
+.metric-grid span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.metric-grid strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 1.32rem;
+  line-height: 1.2;
+}
+
+.metric-grid small {
+  color: var(--muted);
 }
 
 .result-grid {
@@ -280,15 +468,39 @@ ul {
   line-height: 1.65;
 }
 
-textarea {
-  width: 100%;
+.menu-card {
+  display: grid;
+  gap: 12px;
+}
+
+#menuList {
+  display: grid;
+  gap: 10px;
+}
+
+.menu-item {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fbfaf7;
-  color: var(--ink);
-  padding: 12px;
-  resize: vertical;
-  line-height: 1.65;
+}
+
+.menu-item strong {
+  font-size: 1.02rem;
+}
+
+.menu-item p {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+.menu-item span {
+  display: inline-block;
+  margin-right: 8px;
+  color: var(--gold);
+  font-weight: 900;
 }
 
 .line-actions {
@@ -325,7 +537,9 @@ textarea {
 input:focus-visible + span,
 button:focus-visible,
 a:focus-visible,
-textarea:focus-visible {
+textarea:focus-visible,
+select:focus-visible,
+input:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
 }
@@ -335,6 +549,11 @@ textarea:focus-visible {
     padding-top: 26px;
   }
 
+  .link-band {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .mode-grid,
   .choice-grid.single {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -344,8 +563,14 @@ textarea:focus-visible {
   }
 
   .result-card.accent,
-  .line-copy-card {
+  .menu-card,
+  .line-copy-card,
+  .integration-card {
     grid-column: 1 / -1;
+  }
+
+  .metric-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .line-actions {
@@ -359,16 +584,23 @@ textarea:focus-visible {
   }
 
   .card,
-  .hero-panel {
+  .hero-panel,
+  .notice,
+  .placeholder-card {
     padding: 15px;
   }
 
-  .choice-grid {
+  .choice-grid,
+  .form-grid {
     gap: 8px;
   }
 
   .choice-grid span {
     min-height: 50px;
-    font-size: 0.92rem;
+    font-size: 0.9rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
   }
 }

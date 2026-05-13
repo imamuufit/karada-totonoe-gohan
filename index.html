@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#151515">
-    <meta name="description" content="最近の不調や食事傾向から、意識したい食材と現実的なメニュー案を提案するレシピアシスタント。">
+    <meta name="description" content="目的や今日の体調に合わせて、食事の見直しポイントとメニュー案を表示するレシピアシスタント。">
     <title>imamu. からだ整えごはん</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -26,77 +26,162 @@
       <main>
         <section class="hero-panel">
           <p class="date-label">食事コンディションサポート</p>
-          <h2>最近の調子から、今日のごはんを整える。</h2>
-          <p>気になることや食事傾向を選ぶだけで、意識したい栄養素の候補、食材、現実的なメニュー案を表示します。</p>
+          <h2>今日の目的に合わせて、食べ方を整える。</h2>
+          <p>今日の体調や目的に合わせて、食事の見直しポイントとメニュー案を表示します。医療診断ではなく、日々の食事を整えるための一般的なサポートです。</p>
         </section>
 
-        <section class="notice">
-          <strong>ご利用前の注意</strong>
-          <p>このアプリは医療診断、治療、栄養療法を目的としたものではありません。強い不調や長引く症状、妊娠中、治療中、医師から食事制限を受けている方は、医師や専門家へ相談してください。</p>
+        <section class="link-band" aria-label="関連アプリへの導線">
+          <a href="../index.html">体重を記録するアプリへ移動</a>
+          <a href="#modeCard">今日の食事提案を見る</a>
+          <a href="https://page.line.me/948sbivq" target="_blank" rel="noopener">LINEで相談する</a>
+        </section>
+
+        <section class="notice privacy-card">
+          <strong>プライバシー</strong>
+          <p>入力内容は保存されません。このページ内でのみ提案を表示します。LINE相談をする場合は、ご自身で内容をコピーして送信してください。</p>
+        </section>
+
+        <section class="notice safety-card">
+          <strong>安全確認</strong>
+          <p>以下に当てはまる方は、食事提案だけで整えようとせず、医療機関や専門家への相談を優先してください。</p>
+          <div class="choice-grid safety-grid">
+            <label><input type="checkbox" name="safety" value="強い痛み、息苦しさ、めまいがある"><span>強い痛み・息苦しさ・めまい</span></label>
+            <label><input type="checkbox" name="safety" value="急に体重が大きく減った"><span>急な大きな体重減少</span></label>
+            <label><input type="checkbox" name="safety" value="不調が長く続いている"><span>不調が長く続く</span></label>
+            <label><input type="checkbox" name="safety" value="妊娠中・授乳中"><span>妊娠中・授乳中</span></label>
+            <label><input type="checkbox" name="safety" value="治療中、服薬中"><span>治療中・服薬中</span></label>
+            <label><input type="checkbox" name="safety" value="医師から食事制限を受けている"><span>食事制限の指示あり</span></label>
+            <label><input type="checkbox" name="safety" value="摂食障害の既往がある"><span>摂食障害の既往</span></label>
+          </div>
+          <p class="mini-note">このアプリは医療診断、治療、栄養療法を目的としたものではありません。入力内容をもとに、一般的な食事の見直しポイントとメニュー案を表示するものです。</p>
         </section>
 
         <form id="advisorForm" class="flow">
-          <section class="card">
+          <section class="card" id="modeCard">
             <div class="section-heading">
-              <span>Step 1</span>
-              <h2>目的を選ぶ</h2>
-              <p>いちばん近いものを1つ選んでください。</p>
+              <span>Mode</span>
+              <h2>目的別モードを選ぶ</h2>
+              <p>モードに合わせて入力項目と提案内容が切り替わります。</p>
+            </div>
+            <div class="mode-grid">
+              <label><input type="radio" name="mode" value="diet" checked><span><strong>減量に合わせて食事を整えたい</strong><small>カロリーとPFCの開始目安も表示</small></span></label>
+              <label><input type="radio" name="mode" value="condition"><span><strong>体調・不調を整える食事を知りたい</strong><small>数字より食事の偏りを整える</small></span></label>
+              <label><input type="radio" name="mode" value="recovery"><span><strong>筋トレ後の回復を助けたい</strong><small>トレーニング後の栄養補給を考える</small></span></label>
+              <label><input type="radio" name="mode" value="busy"><span><strong>忙しい日の食事を整えたい</strong><small>コンビニ・外食でも選びやすく</small></span></label>
+            </div>
+          </section>
+
+          <section class="card mode-panel active" id="panel-diet">
+            <div class="section-heading">
+              <span>Diet</span>
+              <h2>減量サポート</h2>
+              <p>推定値を出し、体重管理アプリで2週間の変化を見ながら調整する前提です。</p>
+            </div>
+            <div class="form-grid">
+              <label class="field"><span>性別</span><select id="dietSex"><option value="female">女性</option><option value="male">男性</option><option value="other">指定しない</option></select></label>
+              <label class="field"><span>年齢</span><input id="dietAge" type="number" min="12" max="100" inputmode="numeric" placeholder="例 38"></label>
+              <label class="field"><span>身長 cm</span><input id="dietHeight" type="number" min="120" max="230" step="0.1" inputmode="decimal" placeholder="例 165"></label>
+              <label class="field"><span>現在体重 kg</span><input id="dietWeight" type="number" min="20" max="250" step="0.1" inputmode="decimal" placeholder="例 68.5"></label>
+              <label class="field"><span>目標体重 kg</span><input id="dietGoalWeight" type="number" min="20" max="250" step="0.1" inputmode="decimal" placeholder="例 62.0"></label>
+              <label class="field"><span>目標期間</span><select id="dietPeriod"><option value="8">約8週間</option><option value="12" selected>約12週間</option><option value="16">約16週間</option><option value="24">約24週間</option></select></label>
+              <label class="field wide"><span>生活強度</span><select id="activityLevel"><option value="1.2">ほぼ座り仕事・歩数少なめ</option><option value="1.25">1日5,000歩前後</option><option value="1.35" selected>7,000から9,000歩＋軽い運動</option><option value="1.45">立ち仕事＋運動習慣あり</option><option value="1.55">かなり活動的</option></select></label>
+              <label class="field"><span>週の運動回数</span><select id="trainingDays"><option value="0">0回</option><option value="1">1回</option><option value="2" selected>2回</option><option value="3">3回</option><option value="4">4回以上</option></select></label>
+              <label class="field"><span>1日の歩数目安</span><select id="steps"><option value="少なめ">少なめ</option><option value="5,000歩前後" selected>5,000歩前後</option><option value="7,000から9,000歩">7,000から9,000歩</option><option value="10,000歩以上">10,000歩以上</option></select></label>
+            </div>
+            <div class="section-heading small-heading">
+              <h3>食事スタイル</h3>
             </div>
             <div class="choice-grid single">
-              <label><input type="radio" name="goal" value="減量中" checked><span>減量中</span></label>
-              <label><input type="radio" name="goal" value="筋トレ中"><span>筋トレ中</span></label>
-              <label><input type="radio" name="goal" value="体調を整えたい"><span>体調を整えたい</span></label>
-              <label><input type="radio" name="goal" value="忙しくても整えたい"><span>忙しくても整えたい</span></label>
+              <label><input type="radio" name="dietStyle" value="自炊" checked><span>自炊</span></label>
+              <label><input type="radio" name="dietStyle" value="コンビニ"><span>コンビニ</span></label>
+              <label><input type="radio" name="dietStyle" value="外食多め"><span>外食多め</span></label>
+              <label><input type="radio" name="dietStyle" value="家族と同じ食事"><span>家族と同じ食事</span></label>
             </div>
           </section>
 
-          <section class="card">
+          <section class="card mode-panel" id="panel-condition">
             <div class="section-heading">
-              <span>Step 2</span>
-              <h2>気になること</h2>
-              <p>複数選べます。最近よく感じるものを選んでください。</p>
+              <span>Condition</span>
+              <h2>体調・不調を整える食事</h2>
+              <p>体重やカロリーより、食事リズム・栄養密度・食材選びを整えるモードです。</p>
             </div>
+            <div class="section-heading small-heading"><h3>気になること</h3></div>
             <div class="choice-grid">
-              <label><input type="checkbox" name="concern" value="疲れ"><span>疲れ</span></label>
-              <label><input type="checkbox" name="concern" value="むくみ"><span>むくみ</span></label>
-              <label><input type="checkbox" name="concern" value="便通"><span>便通</span></label>
-              <label><input type="checkbox" name="concern" value="肌荒れ"><span>肌荒れ</span></label>
-              <label><input type="checkbox" name="concern" value="冷え"><span>冷え</span></label>
-              <label><input type="checkbox" name="concern" value="空腹感"><span>空腹感</span></label>
-              <label><input type="checkbox" name="concern" value="睡眠"><span>睡眠</span></label>
-              <label><input type="checkbox" name="concern" value="筋肉痛"><span>筋肉痛</span></label>
-              <label><input type="checkbox" name="concern" value="胃もたれ"><span>胃もたれ</span></label>
+              <label><input type="checkbox" name="conditionConcern" value="疲れ"><span>疲れ</span></label>
+              <label><input type="checkbox" name="conditionConcern" value="むくみ"><span>むくみ</span></label>
+              <label><input type="checkbox" name="conditionConcern" value="便通"><span>便通</span></label>
+              <label><input type="checkbox" name="conditionConcern" value="肌荒れ"><span>肌荒れ</span></label>
+              <label><input type="checkbox" name="conditionConcern" value="冷え"><span>冷え</span></label>
+              <label><input type="checkbox" name="conditionConcern" value="空腹感"><span>空腹感</span></label>
+              <label><input type="checkbox" name="conditionConcern" value="睡眠"><span>睡眠</span></label>
+              <label><input type="checkbox" name="conditionConcern" value="胃もたれ"><span>胃もたれ</span></label>
+              <label><input type="checkbox" name="conditionConcern" value="食欲の乱れ"><span>食欲の乱れ</span></label>
             </div>
-          </section>
-
-          <section class="card">
-            <div class="section-heading">
-              <span>Step 3</span>
-              <h2>食事スタイル</h2>
-              <p>今日から取り入れやすい提案に寄せます。</p>
+            <div class="section-heading small-heading"><h3>食事傾向</h3></div>
+            <div class="choice-grid">
+              <label><input type="checkbox" name="conditionHabit" value="朝食少なめ"><span>朝食少なめ</span></label>
+              <label><input type="checkbox" name="conditionHabit" value="たんぱく質が少ない"><span>たんぱく質が少ない</span></label>
+              <label><input type="checkbox" name="conditionHabit" value="肉魚卵が少ない"><span>肉魚卵が少ない</span></label>
+              <label><input type="checkbox" name="conditionHabit" value="野菜が少ない"><span>野菜が少ない</span></label>
+              <label><input type="checkbox" name="conditionHabit" value="甘いものが多い"><span>甘いものが多い</span></label>
+              <label><input type="checkbox" name="conditionHabit" value="揚げ物が多い"><span>揚げ物が多い</span></label>
+              <label><input type="checkbox" name="conditionHabit" value="主食を抜きがち"><span>主食を抜きがち</span></label>
+              <label><input type="checkbox" name="conditionHabit" value="水分が少ない"><span>水分が少ない</span></label>
+              <label><input type="checkbox" name="conditionHabit" value="塩分が多い"><span>塩分が多い</span></label>
+              <label><input type="checkbox" name="conditionHabit" value="脂質を避けすぎている"><span>脂質を避けすぎ</span></label>
+              <label><input type="checkbox" name="conditionHabit" value="食事量が少ない"><span>食事量が少ない</span></label>
+              <label><input type="checkbox" name="conditionHabit" value="夜遅くに食べる"><span>夜遅くに食べる</span></label>
+              <label><input type="checkbox" name="conditionHabit" value="間食が多い"><span>間食が多い</span></label>
             </div>
+            <div class="section-heading small-heading"><h3>食事スタイル</h3></div>
             <div class="choice-grid single">
-              <label><input type="radio" name="style" value="自炊" checked><span>自炊</span></label>
-              <label><input type="radio" name="style" value="コンビニ"><span>コンビニ</span></label>
-              <label><input type="radio" name="style" value="外食多め"><span>外食多め</span></label>
-              <label><input type="radio" name="style" value="家族と同じ食事"><span>家族と同じ食事</span></label>
+              <label><input type="radio" name="conditionStyle" value="自炊" checked><span>自炊</span></label>
+              <label><input type="radio" name="conditionStyle" value="コンビニ"><span>コンビニ</span></label>
+              <label><input type="radio" name="conditionStyle" value="外食多め"><span>外食多め</span></label>
+              <label><input type="radio" name="conditionStyle" value="家族と同じ食事"><span>家族と同じ食事</span></label>
             </div>
           </section>
 
-          <section class="card">
+          <section class="card mode-panel" id="panel-recovery">
             <div class="section-heading">
-              <span>Step 4</span>
-              <h2>食事傾向</h2>
-              <p>当てはまるものを選ぶと、見直しポイントが具体的になります。</p>
+              <span>Training</span>
+              <h2>筋トレ回復サポート</h2>
+              <p>回復を助ける食事の候補と、トレーニング後に取り入れやすい食事を提案します。</p>
             </div>
+            <div class="form-grid">
+              <label class="field"><span>トレーニング頻度</span><select id="recoveryFrequency"><option>週1回</option><option selected>週2から3回</option><option>週4回以上</option></select></label>
+              <label class="field"><span>筋肉痛の強さ</span><select id="muscleSoreness"><option>軽い</option><option selected>普通</option><option>強め</option></select></label>
+              <label class="field"><span>疲労感</span><select id="fatigueLevel"><option>少ない</option><option selected>普通</option><option>強め</option></select></label>
+              <label class="field"><span>睡眠の質</span><select id="sleepQuality"><option>良い</option><option selected>普通</option><option>浅い</option></select></label>
+              <label class="field"><span>たんぱく質の感覚</span><select id="proteinFeeling"><option>足りている</option><option selected>少し不安</option><option>かなり少ない</option></select></label>
+              <label class="field"><span>炭水化物</span><select id="carbPattern"><option>食べている</option><option selected>少し控えがち</option><option>かなり抜きがち</option></select></label>
+              <label class="field"><span>現在の目的</span><select id="phase"><option selected>減量中</option><option>維持期</option></select></label>
+              <label class="field"><span>トレーニング後の食事</span><select id="postMeal"><option>取れている</option><option selected>軽くなら取れる</option><option>取れていない</option></select></label>
+            </div>
+          </section>
+
+          <section class="card mode-panel" id="panel-busy">
+            <div class="section-heading">
+              <span>Busy day</span>
+              <h2>忙しい日の食事</h2>
+              <p>自炊できない日でも、買えるもの・選べるもので整えるモードです。</p>
+            </div>
+            <div class="section-heading small-heading"><h3>今日の食事環境</h3></div>
             <div class="choice-grid">
-              <label><input type="checkbox" name="habit" value="朝食少なめ"><span>朝食少なめ</span></label>
-              <label><input type="checkbox" name="habit" value="肉魚卵が少ない"><span>肉魚卵が少ない</span></label>
-              <label><input type="checkbox" name="habit" value="野菜が少ない"><span>野菜が少ない</span></label>
-              <label><input type="checkbox" name="habit" value="甘いものが多い"><span>甘いものが多い</span></label>
-              <label><input type="checkbox" name="habit" value="揚げ物が多い"><span>揚げ物が多い</span></label>
-              <label><input type="checkbox" name="habit" value="主食を抜きがち"><span>主食を抜きがち</span></label>
-              <label><input type="checkbox" name="habit" value="水分が少ない"><span>水分が少ない</span></label>
+              <label><input type="checkbox" name="busyEnvironment" value="コンビニ" checked><span>コンビニ</span></label>
+              <label><input type="checkbox" name="busyEnvironment" value="スーパー惣菜"><span>スーパー惣菜</span></label>
+              <label><input type="checkbox" name="busyEnvironment" value="外食"><span>外食</span></label>
+              <label><input type="checkbox" name="busyEnvironment" value="家族と同じ食事"><span>家族と同じ食事</span></label>
+              <label><input type="checkbox" name="busyEnvironment" value="時間がない"><span>時間がない</span></label>
+              <label><input type="checkbox" name="busyEnvironment" value="食欲がない"><span>食欲がない</span></label>
+            </div>
+            <div class="section-heading small-heading"><h3>今日の目的</h3></div>
+            <div class="choice-grid">
+              <label><input type="radio" name="busyPurpose" value="減量中" checked><span>減量中</span></label>
+              <label><input type="radio" name="busyPurpose" value="体調を整えたい"><span>体調を整えたい</span></label>
+              <label><input type="radio" name="busyPurpose" value="筋トレ後"><span>筋トレ後</span></label>
+              <label><input type="radio" name="busyPurpose" value="胃腸にやさしくしたい"><span>胃腸にやさしく</span></label>
+              <label><input type="radio" name="busyPurpose" value="とにかく簡単に済ませたい"><span>簡単に済ませたい</span></label>
             </div>
           </section>
 
@@ -105,12 +190,37 @@
           </div>
         </form>
 
+        <section class="placeholder-card" id="placeholderCard">
+          <h2>項目を選ぶと、ここに今日の整えごはん案が表示されます</h2>
+          <p>減量モードでは推定カロリーとPFC目安を、体調・回復・忙しい日モードでは食事の整え方を中心に表示します。</p>
+        </section>
+
         <section class="results" id="results" hidden>
+          <div class="urgent-card" id="urgentCard" hidden>
+            <strong>専門家への相談を優先してください</strong>
+            <p>無理に食事だけで整えようとせず、医療機関や専門家への相談を優先してください。ここでは一般的な食事の整え方だけを表示します。</p>
+          </div>
+
           <div class="result-header">
             <p class="date-label">Today's suggestion</p>
-            <h2>今日の整えごはん案</h2>
+            <h2 id="resultTitle">今日の整えごはん案</h2>
             <p id="resultSummary"></p>
           </div>
+
+          <section class="card calorie-card" id="calorieCard" hidden>
+            <div class="section-heading compact">
+              <div>
+                <span>Diet numbers</span>
+                <h2>減量開始の目安</h2>
+                <p>推定値です。まずは2週間、体重変化を見ながら調整しましょう。</p>
+              </div>
+            </div>
+            <div class="metric-grid">
+              <div><span>推定維持カロリー</span><strong id="maintenanceCalories">----</strong><small>kcal前後</small></div>
+              <div><span>減量開始カロリー</span><strong id="dietCalories">----</strong><small>kcal前後</small></div>
+              <div><span>PFC目安</span><strong id="pfcSummary">--</strong><small>ざっくり目安</small></div>
+            </div>
+          </section>
 
           <div class="result-grid">
             <article class="result-card accent">
@@ -126,9 +236,9 @@
               <h3>おすすめ食材</h3>
               <ul id="foodList"></ul>
             </article>
-            <article class="result-card">
-              <h3>自炊メニュー</h3>
-              <ul id="homeMenuList"></ul>
+            <article class="result-card menu-card">
+              <h3>今日のメニュー案</h3>
+              <div id="menuList"></div>
             </article>
             <article class="result-card">
               <h3>コンビニで買えるもの</h3>
@@ -142,6 +252,11 @@
               <h3>避けすぎ注意ポイント</h3>
               <ul id="cautionList"></ul>
             </article>
+            <article class="result-card integration-card">
+              <h3>体重管理アプリとの使い分け</h3>
+              <p id="weightAppGuide"></p>
+              <a href="../index.html">体重を記録するアプリへ移動</a>
+            </article>
           </div>
 
           <section class="card line-copy-card">
@@ -152,7 +267,7 @@
                 <p>選んだ内容と提案をLINE相談に使いやすい形にまとめます。</p>
               </div>
             </div>
-            <textarea id="lineCopy" rows="9" readonly></textarea>
+            <textarea id="lineCopy" rows="10" readonly></textarea>
             <div class="line-actions">
               <button class="secondary-button" type="button" id="copyButton">コピーする</button>
               <a class="line-button" href="https://page.line.me/948sbivq" target="_blank" rel="noopener">LINEで相談する</a>

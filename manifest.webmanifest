@@ -1,7 +1,7 @@
 {
   "name": "imamu. からだ整えごはん",
   "short_name": "整えごはん",
-  "description": "最近の不調や食事傾向から、意識したい食材と現実的なメニュー案を提案するレシピアシスタント。",
+  "description": "目的や今日の体調に合わせて、食事の見直しポイントとメニュー案を表示するレシピアシスタント。",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
