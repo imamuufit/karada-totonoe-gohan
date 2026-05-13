@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#151515">
+    <meta name="description" content="最近の不調や食事傾向から、意識したい食材と現実的なメニュー案を提案するレシピアシスタント。">
+    <title>imamu. からだ整えごはん</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="brand-kicker">imamu. recipe assistant</p>
+          <h1>からだ整えごはん</h1>
+        </div>
+        <button class="icon-button" type="button" id="installButton" hidden aria-label="ホーム画面に追加">
+          <span aria-hidden="true">＋</span>
+        </button>
+      </header>
+
+      <main>
+        <section class="hero-panel">
+          <p class="date-label">食事コンディションサポート</p>
+          <h2>最近の調子から、今日のごはんを整える。</h2>
+          <p>気になることや食事傾向を選ぶだけで、意識したい栄養素の候補、食材、現実的なメニュー案を表示します。</p>
+        </section>
+
+        <section class="notice">
+          <strong>ご利用前の注意</strong>
+          <p>このアプリは医療診断、治療、栄養療法を目的としたものではありません。強い不調や長引く症状、妊娠中、治療中、医師から食事制限を受けている方は、医師や専門家へ相談してください。</p>
+        </section>
+
+        <form id="advisorForm" class="flow">
+          <section class="card">
+            <div class="section-heading">
+              <span>Step 1</span>
+              <h2>目的を選ぶ</h2>
+              <p>いちばん近いものを1つ選んでください。</p>
+            </div>
+            <div class="choice-grid single">
+              <label><input type="radio" name="goal" value="減量中" checked><span>減量中</span></label>
+              <label><input type="radio" name="goal" value="筋トレ中"><span>筋トレ中</span></label>
+              <label><input type="radio" name="goal" value="体調を整えたい"><span>体調を整えたい</span></label>
+              <label><input type="radio" name="goal" value="忙しくても整えたい"><span>忙しくても整えたい</span></label>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="section-heading">
+              <span>Step 2</span>
+              <h2>気になること</h2>
+              <p>複数選べます。最近よく感じるものを選んでください。</p>
+            </div>
+            <div class="choice-grid">
+              <label><input type="checkbox" name="concern" value="疲れ"><span>疲れ</span></label>
+              <label><input type="checkbox" name="concern" value="むくみ"><span>むくみ</span></label>
+              <label><input type="checkbox" name="concern" value="便通"><span>便通</span></label>
+              <label><input type="checkbox" name="concern" value="肌荒れ"><span>肌荒れ</span></label>
+              <label><input type="checkbox" name="concern" value="冷え"><span>冷え</span></label>
+              <label><input type="checkbox" name="concern" value="空腹感"><span>空腹感</span></label>
+              <label><input type="checkbox" name="concern" value="睡眠"><span>睡眠</span></label>
+              <label><input type="checkbox" name="concern" value="筋肉痛"><span>筋肉痛</span></label>
+              <label><input type="checkbox" name="concern" value="胃もたれ"><span>胃もたれ</span></label>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="section-heading">
+              <span>Step 3</span>
+              <h2>食事スタイル</h2>
+              <p>今日から取り入れやすい提案に寄せます。</p>
+            </div>
+            <div class="choice-grid single">
+              <label><input type="radio" name="style" value="自炊" checked><span>自炊</span></label>
+              <label><input type="radio" name="style" value="コンビニ"><span>コンビニ</span></label>
+              <label><input type="radio" name="style" value="外食多め"><span>外食多め</span></label>
+              <label><input type="radio" name="style" value="家族と同じ食事"><span>家族と同じ食事</span></label>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="section-heading">
+              <span>Step 4</span>
+              <h2>食事傾向</h2>
+              <p>当てはまるものを選ぶと、見直しポイントが具体的になります。</p>
+            </div>
+            <div class="choice-grid">
+              <label><input type="checkbox" name="habit" value="朝食少なめ"><span>朝食少なめ</span></label>
+              <label><input type="checkbox" name="habit" value="肉魚卵が少ない"><span>肉魚卵が少ない</span></label>
+              <label><input type="checkbox" name="habit" value="野菜が少ない"><span>野菜が少ない</span></label>
+              <label><input type="checkbox" name="habit" value="甘いものが多い"><span>甘いものが多い</span></label>
+              <label><input type="checkbox" name="habit" value="揚げ物が多い"><span>揚げ物が多い</span></label>
+              <label><input type="checkbox" name="habit" value="主食を抜きがち"><span>主食を抜きがち</span></label>
+              <label><input type="checkbox" name="habit" value="水分が少ない"><span>水分が少ない</span></label>
+            </div>
+          </section>
+
+          <div class="sticky-actions">
+            <button class="primary-button" type="submit">メニュー案を見る</button>
+          </div>
+        </form>
+
+        <section class="results" id="results" hidden>
+          <div class="result-header">
+            <p class="date-label">Today's suggestion</p>
+            <h2>今日の整えごはん案</h2>
+            <p id="resultSummary"></p>
+          </div>
+
+          <div class="result-grid">
+            <article class="result-card accent">
+              <h3>今日の見直しポイント</h3>
+              <ul id="pointList"></ul>
+            </article>
+            <article class="result-card">
+              <h3>意識したい栄養素</h3>
+              <p class="card-note">不足しやすい可能性があるものを候補として表示します。</p>
+              <ul id="nutrientList"></ul>
+            </article>
+            <article class="result-card">
+              <h3>おすすめ食材</h3>
+              <ul id="foodList"></ul>
+            </article>
+            <article class="result-card">
+              <h3>自炊メニュー</h3>
+              <ul id="homeMenuList"></ul>
+            </article>
+            <article class="result-card">
+              <h3>コンビニで買えるもの</h3>
+              <ul id="storeList"></ul>
+            </article>
+            <article class="result-card">
+              <h3>外食時の選び方</h3>
+              <ul id="eatingOutList"></ul>
+            </article>
+            <article class="result-card">
+              <h3>避けすぎ注意ポイント</h3>
+              <ul id="cautionList"></ul>
+            </article>
+          </div>
+
+          <section class="card line-copy-card">
+            <div class="section-heading compact">
+              <div>
+                <span>LINE</span>
+                <h2>相談用コピー文</h2>
+                <p>選んだ内容と提案をLINE相談に使いやすい形にまとめます。</p>
+              </div>
+            </div>
+            <textarea id="lineCopy" rows="9" readonly></textarea>
+            <div class="line-actions">
+              <button class="secondary-button" type="button" id="copyButton">コピーする</button>
+              <a class="line-button" href="https://page.line.me/948sbivq" target="_blank" rel="noopener">LINEで相談する</a>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>

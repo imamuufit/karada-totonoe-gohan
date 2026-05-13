@@ -1,0 +1,20 @@
+{
+  "name": "imamu. からだ整えごはん",
+  "short_name": "整えごはん",
+  "description": "最近の不調や食事傾向から、意識したい食材と現実的なメニュー案を提案するレシピアシスタント。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f4ed",
+  "theme_color": "#151515",
+  "orientation": "portrait",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

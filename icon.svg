@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="imamu karada totonoe gohan icon">
+  <rect width="512" height="512" rx="96" fill="#151515"/>
+  <rect x="72" y="72" width="368" height="368" rx="56" fill="#f7f4ed"/>
+  <path d="M164 308c72 12 138-20 184-84 14 78-30 132-100 132-38 0-68-17-84-48z" fill="#4e7b5b"/>
+  <path d="M166 205c38-39 92-48 142-25-34 35-88 45-142 25z" fill="#c7a85d"/>
+  <path d="M156 358h200" fill="none" stroke="#151515" stroke-width="24" stroke-linecap="round"/>
+  <path d="M174 216c52 20 108 8 148-32" fill="none" stroke="#151515" stroke-width="16" stroke-linecap="round"/>
+</svg>
