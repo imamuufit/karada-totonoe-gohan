@@ -1,4 +1,4 @@
-const CACHE_NAME = "imamu-karada-gohan-v2";
+const CACHE_NAME = "imamu-karada-gohan-v3";
 const APP_SHELL = [
   "./",
   "./index.html",

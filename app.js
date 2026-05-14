@@ -1,4 +1,5 @@
 const LINE_URL = "https://page.line.me/948sbivq";
+const WEIGHT_APP_URL = "https://imamuufit.github.io/imamu-weight-control/";
 
 let deferredInstallPrompt = null;
 
@@ -6,9 +7,30 @@ const $ = (id) => document.getElementById(id);
 
 const modeLabels = {
   diet: "減量に合わせて食事を整えたい",
+  gain: "筋肉を増やす・増量に合わせて整えたい",
   condition: "体調・不調を整える食事を知りたい",
   recovery: "筋トレ後の回復を助けたい",
   busy: "忙しい日の食事を整えたい"
+};
+
+const nutritionTable = {
+  chickenBreast100: { kcal: 110, p: 23, f: 2, c: 0 },
+  porkLean80: { kcal: 155, p: 17, f: 9, c: 0 },
+  salmon80: { kcal: 165, p: 18, f: 10, c: 0 },
+  tunaCan: { kcal: 70, p: 13, f: 1, c: 0 },
+  egg: { kcal: 75, p: 6, f: 5, c: 0 },
+  natto: { kcal: 95, p: 8, f: 5, c: 7 },
+  tofu150: { kcal: 110, p: 10, f: 6, c: 3 },
+  greekYogurt100: { kcal: 70, p: 10, f: 0, c: 6 },
+  rice100: { kcal: 156, p: 3, f: 0, c: 37 },
+  rice150: { kcal: 234, p: 4, f: 1, c: 55 },
+  onigiri: { kcal: 180, p: 4, f: 1, c: 40 },
+  potato: { kcal: 110, p: 2, f: 0, c: 26 },
+  banana: { kcal: 90, p: 1, f: 0, c: 22 },
+  vegetables: { kcal: 45, p: 3, f: 0, c: 8 },
+  misoSoup: { kcal: 45, p: 3, f: 2, c: 5 },
+  seaweedSalad: { kcal: 35, p: 1, f: 1, c: 6 },
+  oatmeal40: { kcal: 150, p: 5, f: 3, c: 27 }
 };
 
 const conditionAdvice = {
@@ -16,7 +38,7 @@ const conditionAdvice = {
     points: ["疲れやすさが気になる時は、たんぱく質・鉄・ビタミンB群を含む食品が少なくなっていないか見直してみましょう"],
     nutrients: ["たんぱく質", "鉄", "ビタミンB群"],
     foods: ["卵", "赤身肉", "まぐろ", "納豆", "豚肉", "玄米"],
-    menus: [menu("豚しゃぶと温野菜のごはんセット", "豚薄切り肉、冷凍ブロッコリー、にんじん、ごはん、味噌汁", "豚肉と野菜をゆで、ごはんと味噌汁を合わせます。", "約520kcal / P32g前後 / F14g前後 / C62g前後")],
+    menus: [menu("豚しゃぶと温野菜のごはんセット", "豚薄切り肉80g、冷凍ブロッコリー、ごはん150g、味噌汁", "豚肉と野菜をゆで、ごはんと味噌汁を合わせます。", ["porkLean80", "vegetables", "rice150", "misoSoup"])],
     store: ["鮭おにぎり＋ゆで卵＋具だくさん味噌汁", "サラダチキン＋もち麦おにぎり＋無糖ヨーグルト"],
     out: ["肉か魚の定食を選び、ごはんを抜きすぎない"]
   },
@@ -24,7 +46,7 @@ const conditionAdvice = {
     points: ["むくみが気になる時は、水分量・塩分量・カリウムを含む食品のバランスを見直してみましょう"],
     nutrients: ["カリウム", "マグネシウム", "水分"],
     foods: ["バナナ", "ほうれん草", "海藻", "豆腐", "きのこ", "じゃがいも"],
-    menus: [menu("豆腐とわかめの具だくさん味噌汁定食", "豆腐、わかめ、きのこ、卵、ごはん", "味噌汁に豆腐・わかめ・きのこを入れ、卵とごはんを添えます。", "約450kcal / P24g前後 / F13g前後 / C58g前後")],
+    menus: [menu("豆腐とわかめの具だくさん味噌汁定食", "木綿豆腐150g、わかめ、きのこ、卵1個、ごはん100g", "味噌汁に豆腐・わかめ・きのこを入れ、卵とごはんを添えます。", ["tofu150", "vegetables", "egg", "rice100", "misoSoup"])],
     store: ["海藻サラダ＋豆腐バー＋おにぎり", "バナナ＋焼き魚惣菜＋味噌汁"],
     out: ["汁物を全部飲み切らず、野菜や海藻の小鉢を足す"]
   },
@@ -32,7 +54,7 @@ const conditionAdvice = {
     points: ["便通が気になる時は、食物繊維・水分・発酵食品を意識したメニューがおすすめです"],
     nutrients: ["食物繊維", "発酵食品", "水分"],
     foods: ["オートミール", "納豆", "ヨーグルト", "きのこ", "海藻", "ごぼう"],
-    menus: [menu("納豆オクラごはんと具だくさん味噌汁", "納豆、オクラ、もち麦ごはん、きのこ、味噌汁", "納豆とオクラをごはんにのせ、きのこ入り味噌汁を合わせます。", "約500kcal / P23g前後 / F12g前後 / C72g前後")],
+    menus: [menu("納豆オクラごはんと具だくさん味噌汁", "納豆1パック、オクラ、もち麦ごはん150g、きのこ、味噌汁", "納豆とオクラをごはんにのせ、きのこ入り味噌汁を合わせます。", ["natto", "rice150", "vegetables", "misoSoup"])],
     store: ["もち麦おにぎり＋ヨーグルト＋海藻サラダ", "納豆巻き＋味噌汁＋バナナ"],
     out: ["丼だけで済ませず、汁物か野菜小鉢を合わせる"]
   },
@@ -40,7 +62,7 @@ const conditionAdvice = {
     points: ["肌荒れが気になる時は、魚・卵・緑黄色野菜を含む食事が少なくなっていないか見直しましょう"],
     nutrients: ["たんぱく質", "ビタミンA", "ビタミンC", "良質な脂質"],
     foods: ["鮭", "卵", "ブロッコリー", "にんじん", "キウイ", "アボカド"],
-    menus: [menu("鮭とブロッコリーの整えプレート", "鮭、ブロッコリー、にんじん、ごはん、味噌汁", "鮭を焼き、温野菜とごはんを添えます。", "約540kcal / P34g前後 / F17g前後 / C60g前後")],
+    menus: [menu("鮭とブロッコリーの整えプレート", "鮭1切れ80g、ブロッコリー、ごはん150g、味噌汁", "鮭を焼き、温野菜とごはんを添えます。", ["salmon80", "vegetables", "rice150", "misoSoup"])],
     store: ["焼き魚＋ブロッコリーサラダ＋おにぎり", "ゆで卵＋無糖ヨーグルト＋果物"],
     out: ["魚定食や蒸し鶏サラダを選び、甘い飲み物を控えめにする"]
   },
@@ -48,7 +70,7 @@ const conditionAdvice = {
     points: ["冷えが気になる日は、温かい汁物と肉魚卵などの主菜を一緒に入れてみましょう"],
     nutrients: ["たんぱく質", "鉄", "ビタミンE"],
     foods: ["赤身肉", "卵", "鮭", "かぼちゃ", "生姜", "ナッツ"],
-    menus: [menu("生姜入り鶏団子スープごはん", "鶏ひき肉、生姜、白菜、きのこ、ごはん", "鶏団子を作り、野菜と一緒にスープで煮ます。", "約480kcal / P30g前後 / F12g前後 / C62g前後")],
+    menus: [menu("生姜入り鶏団子スープごはん", "鶏むね肉100g、生姜、白菜、きのこ、ごはん100g", "鶏団子を作り、野菜と一緒にスープで煮ます。", ["chickenBreast100", "vegetables", "rice100", "misoSoup"])],
     store: ["温かいスープ＋ゆで卵＋おにぎり", "焼き魚＋かぼちゃ惣菜＋味噌汁"],
     out: ["冷たい単品より、温かい定食や鍋系を選ぶ"]
   },
@@ -56,7 +78,7 @@ const conditionAdvice = {
     points: ["空腹感が強い時は、主食を抜きすぎず、たんぱく質と食物繊維で満足感を作りましょう"],
     nutrients: ["たんぱく質", "食物繊維", "適量の炭水化物"],
     foods: ["鶏むね肉", "卵", "豆腐", "もち麦", "さつまいも", "きのこ"],
-    menus: [menu("鶏むねときのこの雑炊", "鶏むね肉、卵、きのこ、ごはん、ねぎ", "鶏肉ときのこを煮て、ごはんと卵を加えます。", "約460kcal / P33g前後 / F10g前後 / C58g前後")],
+    menus: [menu("鶏むねときのこの雑炊", "鶏むね肉100g、卵1個、きのこ、ごはん100g、ねぎ", "鶏肉ときのこを煮て、ごはんと卵を加えます。", ["chickenBreast100", "egg", "vegetables", "rice100"])],
     store: ["おにぎり＋サラダチキン＋具だくさんスープ", "ゆで卵＋豆腐バー＋さつまいも"],
     out: ["サラダだけにせず、主菜と少量の主食を合わせる"]
   },
@@ -64,7 +86,7 @@ const conditionAdvice = {
     points: ["睡眠が気になる時は、夜の脂っこさを控え、温かく消化しやすい食事に寄せてみましょう"],
     nutrients: ["たんぱく質", "マグネシウム", "ビタミンB6"],
     foods: ["豆腐", "鶏肉", "鮭", "バナナ", "ほうれん草", "味噌"],
-    menus: [menu("豆腐と鶏肉のあっさり鍋", "豆腐、鶏肉、白菜、きのこ、少量のごはん", "鍋に具材を入れて煮込み、少量のごはんを合わせます。", "約430kcal / P32g前後 / F13g前後 / C45g前後")],
+    menus: [menu("豆腐と鶏肉のあっさり鍋", "木綿豆腐150g、鶏むね肉100g、白菜、きのこ、ごはん100g", "鍋に具材を入れて煮込み、少量のごはんを合わせます。", ["tofu150", "chickenBreast100", "vegetables", "rice100"])],
     store: ["鮭おにぎり＋味噌汁＋豆腐バー", "バナナ＋無糖ヨーグルト＋温かいスープ"],
     out: ["揚げ物や大盛りを避け、焼き魚や鍋系にする"]
   },
@@ -72,7 +94,7 @@ const conditionAdvice = {
     points: ["胃もたれが気になる日は、脂質を控えめにして、温かくやわらかい料理を選びましょう"],
     nutrients: ["消化しやすいたんぱく質", "ビタミンB群", "水分"],
     foods: ["豆腐", "白身魚", "卵", "大根", "うどん", "鶏ささみ"],
-    menus: [menu("豆腐と卵のあんかけ", "豆腐、卵、大根、だし、ごはん少量", "豆腐を温め、卵あんをかけて大根を添えます。", "約380kcal / P22g前後 / F12g前後 / C42g前後")],
+    menus: [menu("豆腐と卵のあんかけ", "木綿豆腐150g、卵1個、大根、だし、ごはん100g", "豆腐を温め、卵あんをかけて大根を添えます。", ["tofu150", "egg", "vegetables", "rice100"])],
     store: ["茶碗蒸し＋おでんの大根と卵", "温かいうどん＋豆腐"],
     out: ["揚げ物やこってり麺より、うどん・焼き魚・湯豆腐系を選ぶ"]
   },
@@ -80,7 +102,7 @@ const conditionAdvice = {
     points: ["食欲の乱れが気になる時は、食事時間と主食・主菜のバランスを整えるところから始めましょう"],
     nutrients: ["たんぱく質", "炭水化物", "食物繊維"],
     foods: ["卵", "納豆", "ごはん", "味噌汁", "野菜スープ"],
-    menus: [menu("卵納豆ごはんと野菜スープ", "卵、納豆、ごはん、カット野菜、味噌", "卵と納豆をごはんにのせ、野菜スープを添えます。", "約520kcal / P26g前後 / F15g前後 / C68g前後")],
+    menus: [menu("卵納豆ごはんと野菜スープ", "卵1個、納豆1パック、ごはん150g、カット野菜、味噌", "卵と納豆をごはんにのせ、野菜スープを添えます。", ["egg", "natto", "rice150", "vegetables", "misoSoup"])],
     store: ["おにぎり＋ゆで卵＋野菜スープ", "納豆巻き＋味噌汁＋ヨーグルト"],
     out: ["単品より、主食・主菜・汁物がある形を選ぶ"]
   }
@@ -121,8 +143,39 @@ const styleAdvice = {
   }
 };
 
-function menu(name, ingredients, steps, pfc) {
-  return { name, ingredients, steps, pfc };
+function menu(name, ingredients, steps, itemKeys) {
+  return {
+    name,
+    ingredients,
+    steps,
+    pfc: Array.isArray(itemKeys) ? formatMenuPfc(calculateMenuPfc(itemKeys)) : normalizePfcText(itemKeys)
+  };
+}
+
+function calculateMenuPfc(itemKeys) {
+  return itemKeys.reduce((total, key) => {
+    const item = nutritionTable[key];
+    if (!item) return total;
+    return {
+      kcal: total.kcal + item.kcal,
+      p: total.p + item.p,
+      f: total.f + item.f,
+      c: total.c + item.c
+    };
+  }, { kcal: 0, p: 0, f: 0, c: 0 });
+}
+
+function formatMenuPfc(macros) {
+  const kcal = Math.round(macros.kcal / 10) * 10;
+  const p = Math.max(0, Math.round(macros.p));
+  const f = Math.max(0, Math.round(macros.f));
+  const c = Math.max(0, Math.round(macros.c));
+  return `約${kcal}kcal目安 / P${p}g前後 / F${f}g前後 / C${c}g前後`;
+}
+
+function normalizePfcText(text) {
+  if (!text) return "食材量により変動します";
+  return String(text).includes("目安") ? text : `${text}目安`;
 }
 
 function selected(name) {
@@ -165,13 +218,23 @@ function collectInput() {
       goalWeight: numberValue("dietGoalWeight"),
       periodWeeks: Number(value("dietPeriod") || 12)
     },
+    gainProfile: {
+      sex: value("gainSex"),
+      age: numberValue("gainAge"),
+      height: numberValue("gainHeight"),
+      currentWeight: numberValue("gainWeight"),
+      activityFactor: Number(value("gainActivityLevel") || 1.35),
+      trainingDays: Number(value("gainTrainingDays") || 2),
+      appetite: value("gainAppetite"),
+      foodStyle: selected("gainStyle")[0]
+    },
     activityLevel: {
       factor: Number(value("activityLevel") || 1.35),
       trainingDays: Number(value("trainingDays") || 0),
       steps: value("steps")
     },
     symptoms: selected("conditionConcern"),
-    foodStyle: mode === "diet" ? selected("dietStyle")[0] : selected("conditionStyle")[0],
+    foodStyle: mode === "diet" ? selected("dietStyle")[0] : mode === "gain" ? selected("gainStyle")[0] : selected("conditionStyle")[0],
     habits: selected("conditionHabit"),
     recovery: {
       frequency: value("recoveryFrequency"),
@@ -216,12 +279,37 @@ function calculateDietNumbers(input) {
   };
 }
 
+function calculateGainNumbers(input) {
+  const { sex, age, height, currentWeight, activityFactor } = input.gainProfile;
+  if (!age || !height || !currentWeight) return null;
+  const sexAdjust = sex === "male" ? 5 : sex === "female" ? -161 : -78;
+  const bmr = 10 * currentWeight + 6.25 * height - 5 * age + sexAdjust;
+  const maintenance = bmr * activityFactor;
+  const low = maintenance + 200;
+  const high = maintenance + 300;
+  const target = (low + high) / 2;
+  const protein = currentWeight * 1.6;
+  const fat = target * 0.25 / 9;
+  const carbs = Math.max(120, (target - protein * 4 - fat * 9) / 4);
+  return {
+    maintenance: Math.round(maintenance / 10) * 10,
+    low: Math.round(low / 10) * 10,
+    high: Math.round(high / 10) * 10,
+    target: Math.round(target / 10) * 10,
+    protein: Math.round(protein),
+    fat: Math.round(fat),
+    carbs: Math.round(carbs),
+    type: "gain"
+  };
+}
+
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
 function generateResult(input) {
   if (input.mode === "diet") return generateDietResult(input);
+  if (input.mode === "gain") return generateGainResult(input);
   if (input.mode === "condition") return generateConditionResult(input);
   if (input.mode === "recovery") return generateRecoveryResult(input);
   return generateBusyResult(input);
@@ -229,10 +317,11 @@ function generateResult(input) {
 
 function generateDietResult(input) {
   const numbers = calculateDietNumbers(input);
+  if (numbers) numbers.type = "diet";
   const style = input.foodStyle || "自炊";
   const menus = [
-    menu("鶏むねと温野菜のごはんプレート", "鶏むね肉、冷凍ブロッコリー、きのこ、ごはん、味噌汁", "鶏むね肉を焼き、温野菜とごはんを合わせます。味噌汁を添えると満足感が出ます。", "約520kcal / P38g前後 / F12g前後 / C62g前後"),
-    menu("鮭と豆腐の整え定食", "鮭、豆腐、海藻、野菜、ごはん", "鮭を焼き、豆腐と海藻の小鉢、ごはんを合わせます。", "約560kcal / P36g前後 / F18g前後 / C58g前後")
+    menu("鶏むねと温野菜のごはんプレート", "鶏むね肉100g、冷凍ブロッコリー、きのこ、ごはん150g、味噌汁", "鶏むね肉を焼き、温野菜とごはんを合わせます。味噌汁を添えると満足感が出ます。", ["chickenBreast100", "vegetables", "rice150", "misoSoup"]),
+    menu("鮭と豆腐の整え定食", "鮭1切れ80g、木綿豆腐150g、海藻、野菜、ごはん100g", "鮭を焼き、豆腐と海藻の小鉢、ごはんを合わせます。", ["salmon80", "tofu150", "seaweedSalad", "rice100"])
   ];
   const points = [
     "推定カロリーは開始目安です。まずは2週間、体重変化を見ながら調整しましょう",
@@ -255,6 +344,38 @@ function generateDietResult(input) {
     eatingOut: ["肉か魚の定食を選び、ごはん量は体重変化を見ながら調整する", "丼や麺だけの日は、卵・豆腐・野菜小鉢を足す"],
     cautions: ["カロリーを急に下げすぎない", "主食や脂質を避けすぎず、続けやすい範囲から始める", "体重管理アプリで2週間の変化を見ながら調整しましょう"],
     weightGuide: "体重管理アプリで2週間の変化を見ながら調整しましょう。7日平均が大きく動きすぎる時は、食事量や活動量を小さく見直します。"
+  };
+}
+
+function generateGainResult(input) {
+  const numbers = calculateGainNumbers(input);
+  const appetite = input.gainProfile.appetite || "普通";
+  const style = input.gainProfile.foodStyle || "自炊";
+  const menus = [
+    menu("鮭と卵の増量スタート定食", "鮭1切れ80g、卵1個、ごはん150g、味噌汁、野菜", "鮭を焼き、卵とごはん、味噌汁を合わせます。食欲が少ない日はごはんを分けて食べても大丈夫です。", ["salmon80", "egg", "rice150", "misoSoup", "vegetables"]),
+    menu("鶏むねと納豆のごはんセット", "鶏むね肉100g、納豆1パック、ごはん150g、野菜スープ", "鶏むね肉を焼き、納豆ごはんと野菜スープを合わせます。", ["chickenBreast100", "natto", "rice150", "vegetables"])
+  ];
+  const points = [
+    "まずは維持カロリー＋200から300kcal前後を開始目安にしましょう",
+    "体重の増え方、胃腸の負担、トレーニングの回復感を見ながら調整しましょう",
+    "脂質だけに偏りすぎず、主食とたんぱく質を少しずつ足すと整えやすいです"
+  ];
+  if (appetite === "少なめ") {
+    points.push("食欲が少ない日は、1回で増やすより、間食や飲み物で小さく足す形がおすすめです");
+  }
+  return {
+    mode: "gain",
+    title: "増量に合わせた整えごはん案",
+    summary: "筋肉を増やす目的に合わせて、維持カロリーより少し多めの開始目安と食べやすい増量メニューを表示しています。",
+    numbers,
+    points,
+    nutrients: ["たんぱく質", "炭水化物", "ビタミンB群", "鉄", "マグネシウム", "水分"],
+    foods: ["鶏むね肉", "鮭", "卵", "納豆", "ごはん", "さつまいも", "バナナ", "ギリシャヨーグルト"],
+    menus,
+    storeItems: ["おにぎり＋サラダチキン＋バナナ", "ギリシャヨーグルト＋鮭おにぎり", "ツナ缶＋ごはん＋味噌汁", "ナッツは少量を足す程度から"],
+    eatingOut: ["肉か魚の定食にして、ごはんを少し増やす", "麺だけより、卵や肉・魚の主菜を足せる形を選ぶ"],
+    cautions: ["脂質だけでカロリーを足しすぎない", "胃腸の負担が強い時は量を小分けにする", "体重の増え方が速すぎる時は、まず間食量を少し調整しましょう"],
+    weightGuide: "体重管理アプリで2週間の体重変化を見ながら、増量開始カロリーを小さく調整しましょう。"
   };
 }
 
@@ -285,6 +406,7 @@ function generateRecoveryResult(input) {
   if (r.carbs.includes("控え") || r.carbs.includes("抜き")) points.push("炭水化物を控えがちな日は、ごはん・おにぎり・芋類を少量戻す候補があります");
   if (r.protein.includes("不安") || r.protein.includes("少ない")) points.push("たんぱく質源を毎食1品入れる形にすると、食事全体を組み立てやすくなります");
   if (r.postMeal.includes("取れていない")) points.push("トレーニング後に食事が難しい日は、まず飲み物や軽食で補いやすい形を作りましょう");
+  if (r.phase === "増量中") points.push("増量中は、維持カロリーより少し多めを目安に、主食や間食を小さく足す候補があります");
   return {
     mode: "recovery",
     title: "筋トレ後の回復を助ける食事案",
@@ -294,12 +416,12 @@ function generateRecoveryResult(input) {
     nutrients: ["たんぱく質", "炭水化物", "ビタミンB群", "鉄", "マグネシウム", "水分"],
     foods: ["鶏肉", "卵", "魚", "豆腐", "ごはん", "さつまいも", "バナナ", "ほうれん草"],
     menus: [
-      menu("鶏むね照り焼きとごはん、野菜スープ", "鶏むね肉、ごはん、カット野菜、味噌汁", "鶏むね肉を焼き、野菜スープとごはんを合わせます。", "約560kcal / P40g前後 / F13g前後 / C65g前後"),
-      menu("まぐろ丼と味噌汁", "まぐろ、卵、海苔、ごはん、味噌汁", "ごはんにまぐろと卵をのせ、味噌汁を添えます。", "約600kcal / P42g前後 / F14g前後 / C72g前後")
+      menu("鶏むね照り焼きとごはん、野菜スープ", "鶏むね肉100g、ごはん150g、カット野菜、味噌汁", "鶏むね肉を焼き、野菜スープとごはんを合わせます。", ["chickenBreast100", "rice150", "vegetables", "misoSoup"]),
+      menu("まぐろ丼と味噌汁", "ツナ水煮1缶、卵1個、海苔、ごはん150g、味噌汁", "ごはんにツナと卵をのせ、味噌汁を添えます。", ["tunaCan", "egg", "rice150", "misoSoup"])
     ],
-    storeItems: ["おにぎり＋サラダチキン＋バナナ", "ギリシャヨーグルト＋鮭おにぎり＋味噌汁", "豆腐バー＋おにぎり＋果物"],
+    storeItems: r.phase === "増量中" ? ["おにぎり＋サラダチキン＋バナナ", "ギリシャヨーグルト＋鮭おにぎり＋味噌汁", "ツナ缶＋おにぎり＋野菜スープ", "食欲が少ない日はヨーグルトやバナナを足す"] : ["おにぎり＋サラダチキン＋バナナ", "ギリシャヨーグルト＋鮭おにぎり＋味噌汁", "豆腐バー＋おにぎり＋果物"],
     eatingOut: ["肉か魚の定食にして、主食を極端に減らさない", "筋トレ後はサラダ単品より、主菜と主食を合わせる"],
-    cautions: ["たんぱく質だけに偏らず、動くための主食も適量入れましょう", "回復を助ける食事の候補であり、体調が強くつらい時は休養も優先しましょう"],
+    cautions: ["たんぱく質だけに偏らず、動くための主食も適量入れましょう", "脂質だけに偏りすぎず、主食とたんぱく質を一緒に足しましょう", "回復を助ける食事の候補であり、体調が強くつらい時は休養も優先しましょう"],
     weightGuide: "減量中でも、筋トレ後の食事は体重管理アプリの7日平均を見ながら主食量を調整しましょう。"
   };
 }
@@ -319,8 +441,8 @@ function generateBusyResult(input) {
     nutrients: purpose === "筋トレ後" ? ["たんぱく質", "炭水化物", "水分"] : ["たんぱく質", "食物繊維", "水分", "ビタミンB群"],
     foods: ["おにぎり", "ゆで卵", "焼き魚", "豆腐", "サラダチキン", "海藻サラダ", "味噌汁", "バナナ"],
     menus: [
-      menu("買うだけ整えセット", "おにぎり、ゆで卵、海藻サラダ、味噌汁", "主食・たんぱく質・野菜系・汁物を1つずつ選びます。", "約500kcal / P25g前後 / F12g前後 / C70g前後"),
-      menu("胃腸にやさしい軽めセット", "茶碗蒸し、おでんの大根と卵、温かいうどん少量", "温かく脂っこくないものを組み合わせます。", "約430kcal / P22g前後 / F10g前後 / C60g前後")
+      menu("買うだけ整えセット", "おにぎり、ゆで卵、海藻サラダ、味噌汁", "主食・たんぱく質・野菜系・汁物を1つずつ選びます。", ["onigiri", "egg", "seaweedSalad", "misoSoup"]),
+      menu("胃腸にやさしい軽めセット", "茶碗蒸し、おでんの大根と卵、温かいうどん少量", "温かく脂っこくないものを組み合わせます。", ["egg", "egg", "rice100", "misoSoup"])
     ],
     storeItems: ["おにぎり＋サラダチキン＋海藻サラダ", "焼き魚惣菜＋味噌汁＋カット野菜", "茶碗蒸し＋おでんの大根と卵"],
     eatingOut: ["定食型を選び、主菜と汁物をそろえる", "麺類なら卵や豆腐、野菜小鉢を足す", "揚げ物単品より、焼く・煮る・蒸す料理を選ぶ"],
@@ -358,9 +480,15 @@ function renderResultData(input, resultData) {
 function renderDietNumbers(numbers) {
   $("calorieCard").hidden = !numbers;
   if (!numbers) return;
+  const isGain = numbers.type === "gain";
+  $("calorieTitle").textContent = isGain ? "増量開始の目安" : "減量開始の目安";
+  $("calorieLead").textContent = isGain
+    ? "推定値です。まずは維持＋200から300kcal前後を開始目安にして、体重の増え方と胃腸の負担を見ながら調整しましょう。"
+    : "推定値です。まずは2週間、体重変化を見ながら調整しましょう。";
+  $("startCaloriesLabel").textContent = isGain ? "増量開始カロリー" : "減量開始カロリー";
   $("maintenanceCalories").textContent = numbers.maintenance.toLocaleString();
   $("dietCalories").textContent = `${numbers.low.toLocaleString()}から${numbers.high.toLocaleString()}`;
-  $("pfcSummary").textContent = `P${numbers.protein}g / F${numbers.fat}g / C${numbers.carbs}g`;
+  $("pfcSummary").textContent = `P${numbers.protein}g前後 / F${numbers.fat}g前後 / C${numbers.carbs}g前後`;
 }
 
 function renderList(id, items) {
@@ -380,6 +508,7 @@ function renderMenus(id, menus) {
 
 function buildLineText(input, resultData) {
   if (input.mode === "diet") return buildDietLineText(input, resultData);
+  if (input.mode === "gain") return buildGainLineText(input, resultData);
   if (input.mode === "condition") return buildConditionLineText(input, resultData);
   if (input.mode === "recovery") return buildRecoveryLineText(input, resultData);
   return buildBusyLineText(input, resultData);
@@ -402,6 +531,16 @@ function buildConditionLineText(input, resultData) {
     `食事傾向としては、${input.habits.length ? input.habits.join("・") : "まだ整理できていません"}です。`,
     `アプリでは、${resultData.nutrients.slice(0, 4).join("・")}を意識した食事がおすすめと出ました。`,
     "この内容をもとに、私に合う食事の整え方を相談したいです。"
+  ].join("\n");
+}
+
+function buildGainLineText(input, resultData) {
+  const n = resultData.numbers;
+  return [
+    "筋肉を増やす・増量に合わせて食事を整えたいです。",
+    `現在の体重は${input.gainProfile.currentWeight || "未入力"}kgです。食欲は${input.gainProfile.appetite}で、食事スタイルは${input.gainProfile.foodStyle}が多いです。`,
+    n ? `アプリでは、推定維持カロリーが${n.maintenance.toLocaleString()}kcal前後、増量開始の目安が${n.low.toLocaleString()}から${n.high.toLocaleString()}kcal前後と出ました。` : "カロリー計算に必要な項目はまだ一部未入力です。",
+    "体重の増え方、胃腸の負担、トレーニングの回復感を見ながら、食事の整え方を相談したいです。"
   ].join("\n");
 }
 
@@ -440,6 +579,14 @@ function setupModeSwitching() {
   });
 }
 
+function setupDisplayMode() {
+  document.querySelectorAll('[name="displayMode"]').forEach((input) => {
+    input.addEventListener("change", () => {
+      document.body.classList.toggle("detail-mode", input.value === "detail" && input.checked);
+    });
+  });
+}
+
 function showToast(message) {
   const toast = $("toast");
   toast.textContent = message;
@@ -459,6 +606,7 @@ function escapeHtml(value) {
 
 function setupEvents() {
   setupModeSwitching();
+  setupDisplayMode();
   $("advisorForm").addEventListener("submit", renderResults);
   $("copyButton").addEventListener("click", async () => {
     try {

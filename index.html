@@ -31,7 +31,7 @@
         </section>
 
         <section class="link-band" aria-label="関連アプリへの導線">
-          <a href="../index.html">体重を記録するアプリへ移動</a>
+          <a href="https://imamuufit.github.io/imamu-weight-control/" target="_blank" rel="noopener">体重を記録するアプリへ移動</a>
           <a href="#modeCard">今日の食事提案を見る</a>
           <a href="https://page.line.me/948sbivq" target="_blank" rel="noopener">LINEで相談する</a>
         </section>
@@ -65,9 +65,36 @@
             </div>
             <div class="mode-grid">
               <label><input type="radio" name="mode" value="diet" checked><span><strong>減量に合わせて食事を整えたい</strong><small>カロリーとPFCの開始目安も表示</small></span></label>
+              <label><input type="radio" name="mode" value="gain"><span><strong>筋肉を増やす・増量に合わせて整えたい</strong><small>維持＋少し多めから始める</small></span></label>
               <label><input type="radio" name="mode" value="condition"><span><strong>体調・不調を整える食事を知りたい</strong><small>数字より食事の偏りを整える</small></span></label>
               <label><input type="radio" name="mode" value="recovery"><span><strong>筋トレ後の回復を助けたい</strong><small>トレーニング後の栄養補給を考える</small></span></label>
               <label><input type="radio" name="mode" value="busy"><span><strong>忙しい日の食事を整えたい</strong><small>コンビニ・外食でも選びやすく</small></span></label>
+            </div>
+          </section>
+
+          <section class="card mode-panel" id="panel-gain">
+            <div class="section-heading">
+              <span>Lean gain</span>
+              <h2>増量サポート</h2>
+              <p>筋肉を増やす目的に合わせて、維持カロリー＋少し多めの開始目安と、食べやすいメニューを表示します。</p>
+            </div>
+            <div class="form-grid">
+              <label class="field"><span>性別</span><select id="gainSex"><option value="female">女性</option><option value="male">男性</option><option value="other">指定しない</option></select></label>
+              <label class="field"><span>年齢</span><input id="gainAge" type="number" min="12" max="100" inputmode="numeric" placeholder="例 38"></label>
+              <label class="field"><span>身長 cm</span><input id="gainHeight" type="number" min="120" max="230" step="0.1" inputmode="decimal" placeholder="例 170"></label>
+              <label class="field"><span>現在体重 kg</span><input id="gainWeight" type="number" min="20" max="250" step="0.1" inputmode="decimal" placeholder="例 68.5"></label>
+              <label class="field wide"><span>生活強度</span><select id="gainActivityLevel"><option value="1.2">ほぼ座り仕事・歩数少なめ</option><option value="1.25">1日5,000歩前後</option><option value="1.35" selected>7,000から9,000歩＋軽い運動</option><option value="1.45">立ち仕事＋運動習慣あり</option><option value="1.55">かなり活動的</option></select></label>
+              <label class="field"><span>週の運動回数</span><select id="gainTrainingDays"><option value="1">1回</option><option value="2" selected>2回</option><option value="3">3回</option><option value="4">4回以上</option></select></label>
+              <label class="field"><span>食欲</span><select id="gainAppetite"><option>しっかり食べられる</option><option selected>普通</option><option>少なめ</option></select></label>
+            </div>
+            <div class="section-heading small-heading">
+              <h3>食事スタイル</h3>
+            </div>
+            <div class="choice-grid single">
+              <label><input type="radio" name="gainStyle" value="自炊" checked><span>自炊</span></label>
+              <label><input type="radio" name="gainStyle" value="コンビニ"><span>コンビニ</span></label>
+              <label><input type="radio" name="gainStyle" value="外食多め"><span>外食多め</span></label>
+              <label><input type="radio" name="gainStyle" value="家族と同じ食事"><span>家族と同じ食事</span></label>
             </div>
           </section>
 
@@ -155,7 +182,7 @@
               <label class="field"><span>睡眠の質</span><select id="sleepQuality"><option>良い</option><option selected>普通</option><option>浅い</option></select></label>
               <label class="field"><span>たんぱく質の感覚</span><select id="proteinFeeling"><option>足りている</option><option selected>少し不安</option><option>かなり少ない</option></select></label>
               <label class="field"><span>炭水化物</span><select id="carbPattern"><option>食べている</option><option selected>少し控えがち</option><option>かなり抜きがち</option></select></label>
-              <label class="field"><span>現在の目的</span><select id="phase"><option selected>減量中</option><option>維持期</option></select></label>
+              <label class="field"><span>現在の目的</span><select id="phase"><option selected>減量中</option><option>維持期</option><option>増量中</option></select></label>
               <label class="field"><span>トレーニング後の食事</span><select id="postMeal"><option>取れている</option><option selected>軽くなら取れる</option><option>取れていない</option></select></label>
             </div>
           </section>
@@ -192,7 +219,7 @@
 
         <section class="placeholder-card" id="placeholderCard">
           <h2>項目を選ぶと、ここに今日の整えごはん案が表示されます</h2>
-          <p>減量モードでは推定カロリーとPFC目安を、体調・回復・忙しい日モードでは食事の整え方を中心に表示します。</p>
+          <p>減量・増量モードでは推定カロリーとPFC目安を、体調・回復・忙しい日モードでは食事の整え方を中心に表示します。</p>
         </section>
 
         <section class="results" id="results" hidden>
@@ -205,19 +232,23 @@
             <p class="date-label">Today's suggestion</p>
             <h2 id="resultTitle">今日の整えごはん案</h2>
             <p id="resultSummary"></p>
+            <div class="display-toggle" aria-label="表示切り替え">
+              <label><input type="radio" name="displayMode" value="simple" checked><span>かんたん表示</span></label>
+              <label><input type="radio" name="displayMode" value="detail"><span>くわしく表示</span></label>
+            </div>
           </div>
 
           <section class="card calorie-card" id="calorieCard" hidden>
             <div class="section-heading compact">
               <div>
                 <span>Diet numbers</span>
-                <h2>減量開始の目安</h2>
-                <p>推定値です。まずは2週間、体重変化を見ながら調整しましょう。</p>
+                <h2 id="calorieTitle">開始カロリーの目安</h2>
+                <p id="calorieLead">推定値です。まずは2週間、体重変化を見ながら調整しましょう。</p>
               </div>
             </div>
             <div class="metric-grid">
               <div><span>推定維持カロリー</span><strong id="maintenanceCalories">----</strong><small>kcal前後</small></div>
-              <div><span>減量開始カロリー</span><strong id="dietCalories">----</strong><small>kcal前後</small></div>
+              <div><span id="startCaloriesLabel">開始カロリー</span><strong id="dietCalories">----</strong><small>kcal前後</small></div>
               <div><span>PFC目安</span><strong id="pfcSummary">--</strong><small>ざっくり目安</small></div>
             </div>
           </section>
@@ -255,21 +286,74 @@
             <article class="result-card integration-card">
               <h3>体重管理アプリとの使い分け</h3>
               <p id="weightAppGuide"></p>
-              <a href="../index.html">体重を記録するアプリへ移動</a>
+              <p class="mini-note">体重管理アプリとの自動連動は現在準備中です。先に体重管理アプリで記録しておくと、今後より詳しい食事提案に活用できる予定です。</p>
+              <a href="https://imamuufit.github.io/imamu-weight-control/" target="_blank" rel="noopener">体重を記録するアプリへ移動</a>
             </article>
           </div>
+
+          <details class="card guide-card" open>
+            <summary>ざっくりPFC早見表</summary>
+            <div class="guide-grid">
+              <div>
+                <h3>たんぱく質の目安</h3>
+                <ul>
+                  <li>肉・魚を手のひら1枚分：たんぱく質 約20g前後</li>
+                  <li>卵1個：たんぱく質 約6g</li>
+                  <li>納豆1パック：たんぱく質 約7から8g</li>
+                  <li>豆腐半丁：たんぱく質 約10g前後</li>
+                  <li>ツナ缶1個：たんぱく質 約12から15g</li>
+                </ul>
+              </div>
+              <div>
+                <h3>炭水化物の目安</h3>
+                <ul>
+                  <li>ご飯小盛り100g：炭水化物 約35から40g</li>
+                  <li>ご飯普通盛り150g：炭水化物 約55g前後</li>
+                  <li>食パン6枚切り1枚：炭水化物 約25から30g</li>
+                  <li>バナナ1本：炭水化物 約20g前後</li>
+                  <li>じゃがいも中1個：炭水化物 約25から30g</li>
+                </ul>
+              </div>
+              <div>
+                <h3>脂質の目安</h3>
+                <ul>
+                  <li>油小さじ1：脂質 約4g</li>
+                  <li>油大さじ1：脂質 約12g</li>
+                  <li>マヨネーズ大さじ1：脂質 約10g前後</li>
+                  <li>ナッツひとつかみ：脂質が多くなりやすい</li>
+                  <li>ドレッシングは種類によって脂質が変わりやすい</li>
+                </ul>
+              </div>
+            </div>
+            <p class="card-note">細かいグラム計算を強制するものではなく、だいたいこのくらいという量感の目安です。</p>
+          </details>
+
+          <details class="card detail-only">
+            <summary>調味料のやさしい見方</summary>
+            <p>ドレッシングやマヨネーズは、かける量でカロリーが増えやすいので“少なめから足す”がおすすめです。ノンオイルにこだわりすぎなくても大丈夫ですが、油の量は見えにくいので意識できると整えやすいです。</p>
+          </details>
+
+          <section class="card real-imamu-card">
+            <div class="section-heading compact">
+              <div>
+                <span>Real imamu</span>
+                <h2>迷ったら、リアルイマムに相談してください</h2>
+                <p>アプリの提案はあくまで一般的な目安です。実際の生活リズム、体調、好み、トレーニング内容に合わせた調整はLINEでご相談ください。</p>
+              </div>
+            </div>
+          </section>
 
           <section class="card line-copy-card">
             <div class="section-heading compact">
               <div>
                 <span>LINE</span>
                 <h2>相談用コピー文</h2>
-                <p>選んだ内容と提案をLINE相談に使いやすい形にまとめます。</p>
+                <p>この内容をコピーしてLINEで送ると、個別に相談しやすくなります。</p>
               </div>
             </div>
             <textarea id="lineCopy" rows="10" readonly></textarea>
             <div class="line-actions">
-              <button class="secondary-button" type="button" id="copyButton">コピーする</button>
+              <button class="secondary-button emphasis-copy" type="button" id="copyButton">この内容をコピーしてLINEで送る</button>
               <a class="line-button" href="https://page.line.me/948sbivq" target="_blank" rel="noopener">LINEで相談する</a>
             </div>
           </section>

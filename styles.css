@@ -223,7 +223,8 @@ a {
 
 .mode-grid,
 .choice-grid,
-.form-grid {
+.form-grid,
+.display-toggle {
   display: grid;
   gap: 9px;
 }
@@ -245,14 +246,16 @@ a {
 }
 
 .mode-grid input,
-.choice-grid input {
+.choice-grid input,
+.display-toggle input {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
 .mode-grid span,
-.choice-grid span {
+.choice-grid span,
+.display-toggle span {
   display: grid;
   min-height: 52px;
   place-items: center;
@@ -281,7 +284,8 @@ a {
 }
 
 .mode-grid input:checked + span,
-.choice-grid input:checked + span {
+.choice-grid input:checked + span,
+.display-toggle input:checked + span {
   border-color: var(--leaf);
   background: var(--leaf-soft);
   color: #1d3b28;
@@ -360,6 +364,12 @@ textarea {
   color: var(--ink);
 }
 
+.emphasis-copy {
+  border-color: var(--leaf);
+  background: var(--leaf-soft);
+  color: #1d3b28;
+}
+
 .line-button {
   display: grid;
   place-items: center;
@@ -404,6 +414,16 @@ textarea {
 
 .result-header p:last-child {
   margin-bottom: 0;
+}
+
+.display-toggle {
+  grid-template-columns: 1fr 1fr;
+  margin-top: 12px;
+}
+
+.display-toggle span {
+  min-height: 42px;
+  font-size: 0.9rem;
 }
 
 .calorie-card {
@@ -457,6 +477,30 @@ textarea {
 .card-note {
   margin-bottom: 10px;
   font-size: 0.86rem;
+}
+
+.guide-card summary,
+.detail-only summary {
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.guide-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.detail-only {
+  display: none;
+}
+
+.detail-mode .detail-only {
+  display: block;
+}
+
+.real-imamu-card {
+  background: #fffdf8;
 }
 
 ul {
@@ -570,6 +614,10 @@ input:focus-visible {
   }
 
   .metric-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .guide-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 
